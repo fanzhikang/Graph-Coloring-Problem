@@ -129,7 +129,7 @@ void tabu_search(int *solution, int *conflict_num)
         }
         t_tabu_tenure[temp_node][color_before]=i+curr_conflict_num+rand()%10;
         if(curr_conflict_num<=best_conflict){
-            for(m=0;m>num_node;m++){
+            for(m=0;m<num_node;m++){
                 best_solution[m]=solution[m];
             }
             best_conflict=curr_conflict_num;
@@ -264,11 +264,33 @@ void initial_population(void)
     for(i=0;i<num_node;i++){
         l_s_curr[i]=rand()%num_color;
     }
-    tabu_search(l_s_curr,l_conflict_num);
+    tabu_search(l_s_curr,&l_conflict_num[0]);
+}
+void free_variable(void)
+{
+    
+
+    int i;
+    int j;
+    for(i=0;i<num_node;i++){
+        free(t_adjacent_half[i]);
+        free(t_adjacent_all[i]);
+        free(t_conflict_tabel[i]);
+        free(t_tabu_tenure[i]);
+    }
+    free(t_adjacent_half);
+    free(t_adjacent_all);
+    free(t_conflict_tabel);
+    free(t_tabu_tenure);
+
+    free(l_conflict_num);
+
+    free(l_s_curr);
 }
 
 int main()
 {
     read_file();
     initial_population();
+    free_variable();
 }
